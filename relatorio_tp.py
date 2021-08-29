@@ -10,6 +10,7 @@ import plotly.express as px
 import json
 from urllib.request import urlopen
 import time
+from PIL import Image
 
 st.set_page_config(page_title="Forest Fires in Brazil")
 progress_bar = st.progress(0)
@@ -46,7 +47,6 @@ group_info = st.text("")
 intro_title = st.markdown("")
 intro_text = st.markdown("")
 
-
 fig1_title = st.markdown("")
 fig1 = px.choropleth_mapbox(
     df,
@@ -81,6 +81,108 @@ progress_bar.progress(20)
 
 fig1_title.write("**Número de ocorrências de queimadas registradas no Brasil (1998-2017)**")
 
+# PERGUNTA 1
+st.markdown("## **Em quais estações do ano as queimadas são mais frequentes?**")
+
+st.markdown("Para responder essa pergunta, utilizamos apenas estatísticas básicas, por se tratar de uma base pequena.")
+st.markdown("Inicialmente, tratamos a nossa base de dados de modo que ficasse separado as estações do ano desde 1998 até 2017, com isso conseguimos visualizar no gráfico que as estações da primavera e do inverno se destacam dentro as demais por ter um número elevado de queimadas. Evidenciamos isso quando trouxemos a tona a soma de queimadas dessas estações tendo no inverno e primavera, respectivamente, com 238954.85 e 231725.11 queimadas nesses 20 anos. Note que a diferença dessas duas estações para as outras duas restantes, verão e outono, é quase duas vezes maior.")
+st.markdown("Com isso conseguimos responder que dentre os 20 anos analisados, a estação do ano que possui o maior número de queimdas é o inverno.")
+
+plot_estacoes = Image.open("./plots/queimadas_por_estacao_do_ano.png")
+st.image(plot_estacoes, caption="Primavera+Inverno e Outono+Verão formam dois grupos de dados com características parecidas")
+
+hist_primavera_inverno = Image.open("./plots/media_queimadas_inverno_primavera.png")
+st.image(hist_primavera_inverno, caption="Apesar da média bastante parecida, a distribuição do número de queimadas segue um pouco diferente")
+
+st.markdown("**Uma simples regressão**")
+
+regressao_inverno = Image.open("./plots/regressao_inverno.png")
+st.image(regressao_inverno)
+
+queimadas_por_regiao = Image.open("./plots/queimadas_por_regiao.png")
+st.image(queimadas_por_regiao)
+
+st.markdown("**Estatísticas para as queimadas por estação do ano**")
+
+medias_queimadas_estacao = Image.open("./plots/medias_queimadas_estacao.png")
+st.image(medias_queimadas_estacao, caption="Médias de queimadas por estação do ano")
+
+queimadas_verao = Image.open("./plots/queimadas_verao.png")
+st.image(queimadas_verao)
+
+queimadas_outono = Image.open("./plots/queimadas_outono.png")
+st.image(queimadas_outono)
+
+queimadas_inverno = Image.open("./plots/queimadas_inverno.png")
+st.image(queimadas_inverno)
+
+queimadas_primavera = Image.open("./plots/queimadas_primavera.png")
+st.image(queimadas_primavera)
+
+
+st.markdown("**Estatísticas para as queimadas por região**")
+
+queimadas_norte = Image.open("./plots/queimadas_norte.png")
+st.image(queimadas_norte)
+
+queimadas_nordeste = Image.open("./plots/queimadas_nordeste.png")
+st.image(queimadas_nordeste)
+
+queimadas_centro_oeste = Image.open("./plots/queimadas_centro_oeste.png")
+st.image(queimadas_centro_oeste)
+
+queimadas_sudeste = Image.open("./plots/queimadas_sudeste.png")
+st.image(queimadas_sudeste)
+
+queimadas_sul = Image.open("./plots/queimadas_sul.png")
+st.image(queimadas_sul)
+
+# PERGUNTA 2
+st.markdown("## **Há um aumento no número de ocorrências com o passar do tempo, e é possível realizar suas previsões por períodos governamentais?**")
+st.markdown("Essa pergunta foi abordada, primeiramente, com uma análise exploratória dos dados. Após verificação da base de dados, decidiu-se por escolher um modelo para representação tal que este seja o número total de queimadas por ano, presentes em um novo ‘data frame’(df). Os dados obtidos foram organizados em uma tabela, gráfico de barras, gráfico de linhas e um histograma. Depois, houve uma análise das estatísticas básicas presentes no df, como média, mediana, valores máximo e mínimo, e também a representação dessas em um gráfico de linhas. Além das estatísticas básicas, também examinou-se as medidas de variância e realizou as mesmas interpretações dos indicadores anteriores. Logo após essa exploração inicial dos dados, fez-se necessário uma divisão melhor e por períodos governamentais. Sabendo disso, foram criados 7 novos df’s, a partir do primeiro gerado e com o auxílio da estrutura ‘query’ para seleção desejada, em que cada um continha as informações correspondentes ao período de governo de um específico presidente.\n") 
+st.markdown("No entanto, como a base de dados não possuía dados completos para todos os anos de governo de todos os presidentes, alguns df’s acabaram por ficar com um número menor de informações (isso foi verificado e apresentado). Agora, com essa nova separação, começou-se à fazer testes de hipóteses. Com isso, primeiramente foi gerado um intervalo de confiança, do número total de queimadas, para aqueles períodos de governo que dispunham de uma quantidade razoável de dados, sendo representados por dados limites inferior e superior. Contudo, como esse primeiro método para obtenção de intervalos de confiança requer um número minimamente razoável de dados, não foi possível realizá-lo para todos os períodos. Para estes outros, foi feito um ‘bootstrap’ para simular amostras e ter um número de dados suficientes para uma boa representação do intervalo desejado. Desse modo, foi possível obter os limites inferiores e superiores para o intervalo de confiança. Além disso, representou-se todas as novas amostras simuladas em um histograma. Por último, houve o início da realização das regressões lineares, com o auxílio da biblioteca “sklearn”. Esse modelo foi escolhido pois é o mais adequado aos dados presentes na base de dados. Primeiro, fez-se uma regressão linear para o número total de queimadas de todos os anos da base, ou seja, um modelo geral de regressão. Além disso, verificou-se o coeficiente de determinação e o erro absoluto médio para averiguar a qualidade do modelo. Ainda nesse caso, foi feito também um gráfico para representar a regressão. Logo após, repetiu-se todo esse processo para todos os governos que apresentavam dados em mais de 1 ano.")
+
+queimadas_hist = Image.open("./plots/queimadas_ao_longo_do_tempo.png")
+st.image(queimadas_hist)
+
+queimadas_linhas = Image.open("./plots/queimadas_linhas.png")
+st.image(queimadas_linhas)
+
+queimadas_hist2 = Image.open("./plots/queimadas_hist2.png")
+st.image(queimadas_hist2)
+
+st.markdown("**Teste de Hipótese**")
+
+fhc1 = Image.open("./plots/fhc1.png")
+st.image(fhc1)
+
+temer1 = Image.open("./plots/temer1.png")
+st.image(temer1)
+
+dilma2 = Image.open("./plots/dilma2.png")
+st.image(dilma2)
+
+st.markdown("**Regressões Lineares**")
+
+regressao_geral = Image.open("./plots/regressao_geral.png")
+st.image(regressao_geral)
+
+regressao_lula1 = Image.open("./plots/regressao_lula1.png")
+st.image(regressao_lula1)
+
+regressao_lula2 = Image.open("./plots/regressao_lula2.png")
+st.image(regressao_lula2)
+
+regressao_dilma1 = Image.open("./plots/regressao_dilma1.png")
+st.image(regressao_dilma1)
+
+regressao_dilma2 = Image.open("./plots/regressao_dilma2.png")
+st.image(regressao_dilma2)
+
+st.markdown("Agora, os dados serão relacionados com os fatos históricos mais notáveis que ocorreram no país durante os períodos retratados. Evidentemente, a quantidade de queimadas, uma questão bastante multifatorial, não se deve à apenas resoluções do governo federal e presidência. No entanto, será colocado um principal fato de cada governo que, de forma razoável e interessante, auxilie na análise de verificação dos impactos nesse valor. No governo de Fernando Henrique Cardoso, em 1998, foi assinado um veto ao artigo que proibia queimadas na Lei de Crimes Contra o Meio Ambiente, aprovada durante o seu próprio governo. Com isso, percebe-se o aumento imediato, devido ao incentivo gerado pelo veto, no número de queimadas já em 1999, mantendo-se em uma crescente taxa até o fim de seu segundo mandato. \n") 
+st.markdown("Com o início do governo de Lula, essa quantidade de queimadas atingiu o valor recorde. No entanto, os valores começaram a diminuir a cada ano seguinte durante seus dois mandatos devido à criação do Plano de Prevenção e Controle do Desmatamento na Amazônia Legal, que auxiliou na queda dos valores na principal área de foco até então. Já no período de governo de Dilma Rousseff, percebe-se outro aumento considerável das queimadas. Isso é explicado, especialmente, pelo corte de gastos realizados na prevenção e combate ao desmatamento, tal como cortes consideráveis no plano citado e apresentado durante o governo Lula. A queda de 72% desses gastos, portanto, é possivelmente o principal motivo para os níveis mais altos de quantidade de queimadas durante todo o seu período na presidência. Por último, no único ano de governo de Michel Temer presente nos dados, verifica-se uma grande diminuição em relação aos dois anos anteriores. A principal medida que levou à isso, ao contrário de incentivos propostos pelo governo à criação de áreas para mineração, é a recomposição do orçamento do Ibama com recursos do Fundo Amazônia e outras organizações que auxiliam na prevenção do desmatamento, o que permitiu a retomada da fiscalização já no ano de 2017.")
+
+# PERGUNTA 3
 st.markdown("## **Houve uma mudança no foco das queimadas ao longo dos anos?**")
 
 df_norte = df.query("Estado == 'Acre' or Estado == 'Amapá' or Estado == 'Amazonas' or Estado == 'Pará' or Estado == 'Rondônia' or Estado == 'Roraima' or Estado == 'Tocantins'")
